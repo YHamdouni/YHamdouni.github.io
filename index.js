@@ -74,11 +74,7 @@ async function renderProfilePage() {
     }
     xp_view(
       where: {
-        path: { _like: "%/oujda/div-01%" }
-        _and: [
-          { path: { _nlike: "%checkpoint%" } }
-          { path: { _nlike: "%piscine-js-2%" } }
-          { path: { _nlike: "%piscine-rust%" } }
+        path: { _like: "%/oujda/div-01%" }_and: [{ path: { _nlike: "%checkpoint%" } }{ path: { _nlike: "%piscine-js-2%" } } { path: { _nlike: "%piscine-rust%" } }
         ]
       }
       order_by: { amount: desc }
@@ -218,3 +214,87 @@ function renderGraphs(transactions) {
 if (localStorage.getItem("jwt")) {
   renderProfilePage();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////
+// i will use this query to get the data i need
+// query {
+//   user {
+//       id
+//       login
+//       firstName
+//       lastName
+//       email
+//       campus
+//       auditRatio
+//       totalUp
+//       totalDown
+//       xpTotal: transactions_aggregate(where: {type: {_eq: "xp"}, eventId: {_eq: 41}}) {
+//         aggregate {
+//           sum {
+//             amount
+//           }
+//         }
+//       }
+//       events(where:{eventId:{_eq:56}}) {
+//         level
+//       }
+//       xp: transactions(order_by: {createdAt: asc}
+//         where: {type: {_eq: "xp"}, eventId: {_eq: 56}}) {
+//           createdAt
+//           amount
+//           path
+//       }
+//       finished_projects: groups(where:{group:{status:{_eq:finished}}}) {
+//           group {
+//           path
+//           status
+//         }
+//       }
+//       current_projects: groups(where:{group:{status:{_eq:working}}}) {
+//           group {
+//           path
+//           status
+//           members {
+//             userLogin
+//           }
+//         }
+//       }
+//       setup_project: groups(where:{group:{status:{_eq:setup}}}) {
+//           group {
+//           path
+//           status
+//           members {
+//             userLogin
+//           }
+//         }
+//       }
+//       skills: transactions(
+//           order_by: {type: asc, amount: desc}
+//           distinct_on: [type]
+//           where: {eventId: {_eq: 41}, _and: {type: {_like: "skill_%"}}}
+//       ) {
+//           type
+//           amount
+//       }
+//   }
+// }
+
