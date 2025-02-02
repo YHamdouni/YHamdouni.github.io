@@ -65,61 +65,44 @@ async function renderProfilePage() {
 
   const query = `
        query {
-    user {
-      login
-      firstName
-      lastName
-      campus
-      auditRatio
-    }
-    xp_view(
-      where: {
-        path: { _like: "%/oujda/div-01%" }_and: [{ path: { _nlike: "%checkpoint%" } }{ path: { _nlike: "%piscine-js-2%" } } { path: { _nlike: "%piscine-rust%" } }
-        ]
+  user {
+    id
+    login
+    firstName
+    lastName
+    email
+    campus
+    auditRatio
+    totalUp
+    totalDown
+    finished_projects: groups(
+      where: {group: {status: {_eq: finished}, _and: [{path: {_like: "%module%"}}, {path: {_nilike: "%piscine-js%"}}]}}
+    ) {
+      group {
+        path
+        captain{
+          canBeAuditor
+        }
+        status
+        members{
+          userLogin
+        }
       }
-      order_by: { amount: desc }
-      limit: 10
-    ) {
-      amount
-      originEventId
-      path
-      userId
     }
-    transaction_xp: transaction(
-      where: { type: { _eq: "xp" }, eventId: { _eq: 56 } }
-    ) {
-      createdAt
-      amount
-      path
-      type
-    }
-    transaction_audits: transaction(
-      order_by: { createdAt: asc }
-      where: { type: { _regex: "up|down" } }
-    ) {
-      type
-      amount
-      path
-      createdAt
-    }
-    transaction_skills: transaction(
-      where: { eventId: { _eq: 56 }, _and: { type: { _like: "skill_%" } } }
-    ) {
-      type
-      amount
-      path
-    }
-    transaction_aggregate {
-      aggregate {
-        sum {
-          amount
+    current_projects: groups(where: {group: {status: {_eq: working}}}) {
+      group {
+        path
+        status
+        members {
+          userLogin
         }
       }
     }
   }
+}
 
 `
-;
+    ;
 
   try {
     const response = await fetch(GRAPHQL_URL, {
@@ -132,7 +115,7 @@ async function renderProfilePage() {
     });
 
     const result = await response.json();
-    console.log("result",result.data);
+    console.log("result", result.data);
 
     if (result.errors) {
       console.error("GraphQL Errors:", result.errors);
@@ -141,11 +124,11 @@ async function renderProfilePage() {
 
     const user = result.data.user;
     // console.log("user",user);
-    
-    let login ;
+
+    let login;
     let transactions = [];
     user.forEach((user) => {
-      login = user.login; 
+      login = user.login;
       transactions = user.transactions;
     });
 
@@ -180,7 +163,7 @@ async function renderProfilePage() {
 // Graph Rendering
 function renderGraphs(transactions) {
   console.log("Rendering graphs...", transactions);
-  
+
   const svg1 = document.getElementById("graph1");
   const svg2 = document.getElementById("graph2");
 
@@ -195,7 +178,7 @@ function renderGraphs(transactions) {
   line.setAttribute("points", xpOverTime.map((p) => `${p.x},${p.y}`).join(" "));
   line.setAttribute("stroke", "blue");
   line.setAttribute("fill", "black");
-  
+
   svg1.appendChild(line);
 
   // Example: Pie Chart for XP distribution
