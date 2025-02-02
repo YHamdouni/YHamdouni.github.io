@@ -1,0 +1,156 @@
+const query = `query {
+    user {
+      id
+      login
+      firstName
+      lastName
+      email
+      campus
+      auditRatio
+      totalUp
+      totalDown
+      finished_projects: groups(
+        where: {group: {status: {_eq: finished}, _and: [{path: {_like: "%module%"}}, {path: {_nilike: "%piscine-js%"}}]}}
+      ) {
+        group {
+          path
+          status
+          members {
+            userLogin
+          }
+        }
+      }
+      current_projects: groups(where: {group: {status: {_eq: working}}}) {
+        group {
+          path
+          status
+          members {
+            userLogin
+          }
+        }
+      }
+    }
+  }`;
+
+
+
+
+
+
+
+
+
+
+
+Data.forEach(Element => {
+      UserData.username = Element.login;
+      UserData.firstName = Element.firstName;
+      UserData.lastName = Element.lastName;
+      UserData.email = Element.email;
+      UserData.campus = Element.campus;
+      UserData.auditRatio = (parseFloat(Element.auditRatio)).toFixed(1);
+      UserData.totalUp = formatSize(parseFloat(Element.totalUp));
+      UserData.totalDown = formatSize(parseFloat(Element.totalDown));
+      UserData.successrojects = Element.finished_projects.length;
+      finished_projects = Element.finished_projects;
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  const profileHTML = (userData) => `
+  <header class="header">
+    <h1>User Profile</h1>
+    <div id="user-data">
+      <div><strong>Username:</strong> ${userData.username}</div>
+      <div><strong>First Name:</strong> ${userData.firstName}</div>
+      <div><strong>Last Name:</strong> ${userData.lastName}</div>
+      <div><strong>Email:</strong> ${userData.email}</div>
+      <div><strong>Campus:</strong> ${userData.campus}</div>
+      <div><strong>Audit Ratio:</strong> ${userData.auditRatio}</div>
+      <div><strong>Total Uploads:</strong> ${userData.totalUp}</div>
+      <div><strong>Total Downloads:</strong> ${userData.totalDown}</div>
+      <div><strong>Successful Projects:</strong> ${userData.successrojects}</div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div id="profile-section">
+      <h2>Current Projects</h2>
+      <div>
+        ${userData.current_projects.length > 0 ?
+    userData.current_projects.map(project => `
+            <div>
+              <strong>Project Path:</strong> ${project.group.path}
+              <div><strong>Status:</strong> ${project.group.status}</div>
+            </div>
+          `).join('') :
+    '<p>No current projects.</p>'
+  }
+      </div>
+      
+      <h2>Finished Projects</h2>
+      <div>
+        ${userData.finished_projects.length > 0 ?
+    userData.finished_projects.map(project => `
+            <div>
+              <strong>Project Path:</strong> ${project.group.path}
+              <div><strong>Status:</strong> ${project.group.status}</div>
+            </div>
+          `).join('') :
+    '<p>No finished projects.</p>'
+  }
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <button id="logout">Logout</button>
+  </footer>
+`;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+First Name: ${userData.firstName}
+      Last Name: ${userData.lastName}
+      Email: ${userData.email}
+      Audit Ratio: ${userData.auditRatio}
+      Total Uploads: ${userData.totalUp}
+      Total Downloads: ${userData.totalDown}
+      Successful Projects: ${userData.successrojects}

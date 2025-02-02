@@ -1,7 +1,3 @@
-// Entry Point for GraphQL Profile Page Project
-
-// **Step 1: Setup Login Page**
-// HTML Structure for Login Page
 const loginPage = `
   <div class="login-container">
     <h1>Login</h1>
@@ -15,6 +11,45 @@ const loginPage = `
 `;
 
 document.body.innerHTML = loginPage;
+
+
+const profileHTML = (userData) => `
+<header class="header">
+  Campus ${userData.campus}
+  <button id="logout">Logout</button>
+</header>
+<div class="main-content">
+    <details>
+    <summary><strong>Username:</strong> ${userData.username}</strong></summary>
+    <article>
+      <p>First Name: ${userData.firstName}</p>
+      <p>Last Name: ${userData.lastName}</p>
+      <p>Email: ${userData.email}</p>
+      <p>Audit Ratio: ${userData.auditRatio}</p>
+      <p>Total Uploads: ${userData.totalUp}</p>
+      <p>Total Downloads: ${userData.totalDown}</p>
+      <p>Successful Projects: ${userData.successrojects}</p>
+    </article>
+    </details>
+    <div id="graphs">graph place</div>
+</div> 
+`;
+
+
+let UserData = {
+  username: "",
+  firstName: "",
+  lastName: "",
+  email: "",
+  campus: "",
+  auditRatio: "",
+  totalUp: "",
+  totalDown: "",
+  successrojects: 0,
+  current_projects: [],
+  finished_projects: []
+};
+
 
 // API Endpoints
 const BASE_URL = "https://learn.zone01oujda.ma/api";
@@ -80,9 +115,6 @@ async function renderProfilePage() {
     ) {
       group {
         path
-        captain{
-          canBeAuditor
-        }
         status
         members{
           userLogin
@@ -122,76 +154,36 @@ async function renderProfilePage() {
       throw new Error("Failed to fetch user data");
     }
 
-    const user = result.data.user;
-    // console.log("user",user);
+    const Data = result.data.user;
 
-    let login;
-    let transactions = [];
-    user.forEach((user) => {
-      login = user.login;
-      transactions = user.transactions;
+
+    Data.forEach(Element => {
+      UserData.username = Element.login;
+      UserData.firstName = Element.firstName;
+      UserData.lastName = Element.lastName;
+      UserData.email = Element.email;
+      UserData.campus = Element.campus;
+      UserData.auditRatio = (parseFloat(Element.auditRatio)).toFixed(1);
+      UserData.totalUp = formatSize(parseFloat(Element.totalUp));
+      UserData.totalDown = formatSize(parseFloat(Element.totalDown));
+      UserData.current_projects = Element.current_projects;
+      UserData.successrojects = Element.finished_projects.length;
+      UserData.finished_projects = Element.finished_projects;
     });
 
-    const profileHTML = `
-      <div class="profile-container">
-        <h1>Welcome, ${login}</h1>
-        <button id="logout">Logout</button>
-        <section>
-          <h2>Statistics</h2>
-          <div id="graphs">
-            <svg id="graph1" width="400" height="200"></svg>
-            <svg id="graph2" width="400" height="200"></svg>
-          </div>
-        </section>
-      </div>
-    `;
 
-    document.body.innerHTML = profileHTML;
+    document.body.innerHTML = profileHTML(UserData);
 
     document.getElementById("logout").addEventListener("click", () => {
       localStorage.removeItem("jwt");
       document.body.innerHTML = loginPage;
     });
 
-    renderGraphs(transactions);
   } catch (error) {
     console.error("Failed to render profile page:", error);
   }
 }
 
-
-// Graph Rendering
-function renderGraphs(transactions) {
-  console.log("Rendering graphs...", transactions);
-
-  const svg1 = document.getElementById("graph1");
-  const svg2 = document.getElementById("graph2");
-
-  // Example: XP over time
-  const xpOverTime = transactions.map((tx) => ({
-    x: new Date(tx.createdAt).getTime(),
-    y: tx.amount,
-  }));
-
-  // SVG Drawing logic for line graph (XP over time)
-  const line = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
-  line.setAttribute("points", xpOverTime.map((p) => `${p.x},${p.y}`).join(" "));
-  line.setAttribute("stroke", "blue");
-  line.setAttribute("fill", "black");
-
-  svg1.appendChild(line);
-
-  // Example: Pie Chart for XP distribution
-  const totalXP = transactions.reduce((sum, tx) => sum + tx.amount, 0);
-  let cumulativeXP = 0;
-  transactions.forEach((tx) => {
-    const percentage = (tx.amount / totalXP) * 100;
-    const arc = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    // SVG path generation logic for pie chart goes here
-    svg2.appendChild(arc);
-    cumulativeXP += tx.amount;
-  });
-}
 
 // Initial Render
 if (localStorage.getItem("jwt")) {
@@ -201,6 +193,18 @@ if (localStorage.getItem("jwt")) {
 
 
 
+
+// Convert totalUp and totalDown, deciding between B, KB, and MB
+function formatSize(sizeInBytes) {
+  if (sizeInBytes < 1000) {
+    return sizeInBytes + " B";
+  } else if (sizeInBytes < 1000 * 1000) {
+    return (sizeInBytes / 1000).toFixed(2) + " KB";
+  } else {
+    sizeInBytes = (sizeInBytes / 1000 / 1000).toFixed(3);
+    return sizeInBytes.slice(0, 4) + " MB";
+  }
+}
 
 
 
@@ -281,3 +285,48 @@ if (localStorage.getItem("jwt")) {
 //   }
 // }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////
+{/* <h2>Current Projects</h2>
+    <div>
+      ${userData.current_projects.length > 0 ?
+    userData.current_projects.map(project => `
+          <div>
+            <strong>Project Path:</strong> ${project.group.path}
+            <div><strong>Status:</strong> ${project.group.status}</div>
+          </div>
+        `).join('') :
+    '<p>No current projects.</p>'
+  }
+    </div> */}
+
+
+
+{/* <h2>Finished Projects</h2>
+    <div>
+      ${userData.finished_projects.length > 0 ?
+    userData.finished_projects.map(project => `
+          <div>
+            <strong>Project Path:</strong> ${project.group.path}
+            <div><strong>Status:</strong> ${project.group.status}</div>
+          </div>
+        `).join('') :
+    '<p>No finished projects.</p>'
+  }
+    </div> */}
