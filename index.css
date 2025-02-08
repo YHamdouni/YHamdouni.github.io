@@ -1,157 +1,226 @@
-/* Global Styles */
 body {
   font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f4f4f9;
+  background-color: hsl(264, 5%, 20%);
   color: #333;
+  overflow-y: auto;
+  background-image: url('/svgexport-1.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
-/* Header Styles */
-.header {
-  font-size: 30px;
-  background-color: #2c3e50;
-  color: white;
-  padding: 20px;
-  text-align: center;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 10;
-}
-
-h1,
-h2 {
-  color: #2C3E50;
-}
-
-h1 {
-  font-size: 32px;
-  font-weight: 600;
-}
-
-/* Login Page Styles */
 .login-container {
   max-width: 450px;
-  width: 100%;
-  background-color: #ffffff;
+  background-color: #c7c2cc;
   padding: 40px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   text-align: center;
   box-sizing: border-box;
-  margin-top: 100px;
-  /* Added margin-top to push content below fixed header */
+  margin: 100px auto;
+  opacity: 0.88;
 }
 
-/* Profile Page Styles */
-.main-content {
-  justify-content: space-between;
-  margin-top: 100px; /* To avoid overlap with fixed header */
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  height: auto;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  position: fixed;
+input[type="text"],
+input[type="password"] {
   width: 100%;
-  height: 100%;
-  
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
 }
 
-#graphs {
-  background-color: #000000;;
+button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #2c3e50;
   color: white;
-  text-align: center;
-  width: 50%;
-  height: 100%;
-  float: right;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 1;
+  /* Ensure it's above other elements */
+}
+
+button:hover {
+  background-color: #34495e;
 }
 
 button#logout {
-  background-color: #e74c3c;
-  color: white;
-  border-radius: 6px;
-  margin-right: 50px;
-  padding: 8px 15px;
-  cursor: pointer;
+  background-color: #2c3e50;
   font-size: 16px;
-  transition: background-color 0.3s ease;
+  width: auto;
   float: right;
 }
 
 button#logout:hover {
-  background-color: #c0392b;
+  background-color: #000000;
 }
 
-/* Other Styles */
-details {
-  width: 300px;
-  background-color: #34495e;
-  color: white;
-  padding: 10px;
-  border-radius: 6px;
-  margin: 10px 0;
-  float: left;
+.logo {
+  width: 50px;
+  height: 50px;
 }
 
-summary {
-  width: 300px;
-  list-style: none;
-  font-weight: 600;
-  font-size: 18px;
-  cursor: pointer;
-  padding: 4px;
-  background-color: #2c3e50;
+.compus {
+  height: 50px;
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
+  float: left;
+  position: relative;
 }
 
-summary:hover {
-  background-color: #1abc9c;
+.Page-Top {
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+  position: relative;
 }
 
-details[open] summary {
-  background-color: #1abc9c;
+/****************************************************************/
+
+.personal-info {
+  margin-top: 50px;
+  border-radius: 10px;
+  color: #fff;
+  float: left;
+  text-align: left;
+  background-color: #b9b6bd;
+
 }
 
-details[open] summary::after {
-  content: "▼";
+.personal-info h2 {
+  text-align: center;
+  color: #000000;
 }
 
-summary::after {
-  content: "▼";
-  font-size: 18px;
-  font-weight: 600;
-  transition: transform 0.3s ease;
+.personal-info p {
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 35px;
 }
 
-
-details[open]>summary::after {
-  transform: rotate(180deg);
+.personal-info strong {
+  color: #000000;
 }
 
-details p {
-  margin: 10px 0;
-  font-size: 16px;
+/******************************************************************/
+.projects-success {
+  margin-top: 50px;
+  border-radius: 10px;
+  color: #fff;
+  float: left;
+  text-align: left;
+  /* margin-left: 250px; */
+  background-color: #b9b6bd;
+  height: 340px;
+  width: 300px;
+  overflow-y: scroll;
 }
 
-/* Responsive Styles */
-@media (max-width: 768px) {
-  .login-container {
-    padding: 30px;
+.projects-success h2 {
+  text-align: center;
+  color: #000000;
+}
+
+.projects-success p {
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+/*******************************************************************/
+.current-projects {
+  margin-top: 50px;
+  border-radius: 10px;
+  color: #fff;
+  float: left;
+  text-align: left;
+  /* margin-left: 250px; */
+  background-color: #b9b6bd;
+  height: 340px;
+  width: 300px;
+  overflow-y: scroll;
+}
+
+.current-projects h2 {
+  text-align: center;
+  color: #000000;
+}
+
+.current-projects p {
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+/*******************************************************************/
+
+.profile-container {
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 150px;
+}
+
+/* Works on Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(52, 52, 75) rgb(78, 78, 60);
+}
+
+/**********************************************************************/
+#graph1 {
+  width: 90%;
+  max-width: 600px;
+  height: 100%;
+  margin: 20px auto;
+  border-radius: 20px;
+  text-align: center;
+  background-color: #b9b6bd;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  /* justify-content: center; */
+  padding: 20px;
+  overflow-x: auto;
+}
+#graph2 {
+  background-color: #b9b6bd;
+  margin-bottom: 20px;
+  height: 100%;
+  margin-right: 20px;
+}
+#title{
+  color: #000000;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+@media (max-width: 768px) {}
+
+@media (max-width: 425px) {
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media (max-width: 375px) {
+  .compus {
+    font-size: 10px;
   }
 
-  .main-content {
-    padding: 15px;
-  }
-
-  button {
-    font-size: 14px;
-  }
-
-  button#logout {
-    font-size: 14px;
+  svg {
+    width: 100%;
+    height: 100%;
   }
 }
