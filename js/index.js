@@ -17,7 +17,7 @@ document.body.innerHTML = loginPage;
 const profileHTML = (userData) => `
 <div class="Page-Top">
   <div class="compus">
-    <img src="../src/logo.png" alt="Logo" class="logo">
+    <img src="/src/logo.png" alt="Logo" class="logo">
     <h1>Campus ${userData.campus}</h1>
   </div>
   <button id="logout">Logout</button>
