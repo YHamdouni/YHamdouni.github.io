@@ -5,7 +5,7 @@ body {
   background-color: hsl(264, 5%, 20%);
   color: #333;
   overflow-y: auto;
-  background-image: url('/svgexport-1.svg');
+  background-image: url('../src/intra.svg');
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
