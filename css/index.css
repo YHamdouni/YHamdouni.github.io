@@ -204,6 +204,11 @@ button#logout:hover {
   font-weight: bold;
   text-align: center;
 }
+/*****************************************************************************/
+#error-message{
+  color:red;
+  font-size: 12px;
+}
 
 @media (max-width: 768px) {}
 

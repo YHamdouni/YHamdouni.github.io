@@ -7,7 +7,7 @@ const loginPage = `
       <input type="password" id="password" placeholder="Password" required />
       <button type="submit">Login</button>
     </form>
-    <p id="error-message" class="hidden">Invalid credentials. Please try again.</p>
+    <p id="error-message"></p>
   </div>
 `;
 
@@ -99,13 +99,19 @@ async function login(username, password) {
       },
     });
 
-    if (!response.ok) throw new Error("Login failed");
+    if (!response.ok) {
+      document.getElementById("error-message").innerHTML = `Invalid credentials. Please try again.`;
+      setTimeout(()=>{
+        document.getElementById("error-message").innerHTML = ``
+      },3000)
+      return;
+    }
 
     const jwt = await response.json();
     localStorage.setItem("jwt", jwt);
     renderProfilePage();
   } catch (error) {
-    document.getElementById("error-message").classList.remove("hidden");
+    document.getElementById("error-message").innerHTML = `Invalid credentials. Please try again.`;
   }
 }
 
@@ -127,8 +133,7 @@ async function renderProfilePage() {
   if (!jwt) {
     document.body.innerHTML = loginPage;
     return;
-  }
-  ;
+  };
 
   try {
     const response = await fetch(GRAPHQL_URL, {
@@ -143,7 +148,6 @@ async function renderProfilePage() {
     const result = await response.json();
 
     if (result.errors) {
-      console.error("GraphQL Errors:", result.errors);
       throw new Error("Failed to fetch user data");
     }
 
