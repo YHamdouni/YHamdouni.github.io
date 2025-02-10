@@ -196,7 +196,7 @@ button#logout:hover {
   background-color: #b9b6bd;
   margin-bottom: 20px;
   height: 100%;
-  margin-right: 200px;
+  margin-right: auto;
 }
 #title{
   color: #000000;
