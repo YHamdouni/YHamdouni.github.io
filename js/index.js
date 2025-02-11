@@ -53,12 +53,10 @@ const profileHTML = (userData) => `
       <h2>you worked with :</h2>
       <p id="NamesAndTimes"></p>
     </div>
+    <div id="svg-graph111">
+    </div>
   </div>
   <div id="graph2">
-    <div id="title">
-    <h2>Audits ratio</h2>
-
-    </div>
   </div>
 </div>
 `;
@@ -77,7 +75,6 @@ let UserData = {
   current_projects: [],
   finished_projects: [],
   XP: 0,
-  Skills: [],
 };
 let members = [];
 
@@ -101,9 +98,9 @@ async function login(username, password) {
 
     if (!response.ok) {
       document.getElementById("error-message").innerHTML = `Invalid credentials. Please try again.`;
-      setTimeout(()=>{
+      setTimeout(() => {
         document.getElementById("error-message").innerHTML = ``
-      },3000)
+      }, 3000)
       return;
     }
 
@@ -152,7 +149,6 @@ async function renderProfilePage() {
     }
 
     const Data = result.data.user;
-    UserData.Skills = result.data.sklis;
 
     Data.forEach(Element => {
       UserData.username = Element.login;
@@ -183,9 +179,8 @@ async function renderProfilePage() {
       });
     });
 
-
     document.body.innerHTML = profileHTML(UserData);
-    const graph1 = document.getElementById("graph1");
+    const graph1 = document.getElementById("svg-graph111");
     SVGCREATE(graph1, "graph1", members.length);
     const svg1 = document.getElementById("svg-graph1");
     GRAPH(svg1, members);
@@ -242,7 +237,7 @@ function SVGCREATE(graph, id, dataLength) {
 }
 
 function GRAPH(svg, DATA) {
-  if (!DATA.length) return; // Handle empty data
+  if (!DATA.length) return;
 
   DATA.sort((a, b) => b.times - a.times);
 
@@ -250,11 +245,12 @@ function GRAPH(svg, DATA) {
   const barWidth = 30;
   const barSpacing = 15;
   const graphHeight = 280;
-  const baseX = 10;
+  const baseX = 0;
   const NamesAndTimes = document.getElementById("NamesAndTimes");
 
   DATA.forEach((item, index) => {
-    const barHeight = (item.times / maxTimes) * 250; // Scale bars
+
+    const barHeight = (item.times / maxTimes) * 250;
     const x = baseX + index * (barWidth + barSpacing);
     const y = graphHeight - barHeight;
 
